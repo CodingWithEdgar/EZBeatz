@@ -2,7 +2,32 @@ import React, { useState } from "react";
 import kick from './samples/trad_kick_01_C.wav'
 
 export default function Music(props) {
+<<<<<<< Updated upstream
     const [audioPlaying, setAudioPlaying] = useState(false);
+=======
+  const AudioContext = new (window.AudioContext || window.webkitAudioContext)();
+  const audioCtx = new AudioContext();
+
+  const audioTune = new Audio(props.audio);
+
+  const track = audioCtx.createMediaElementSource(audioTune);
+  track.connect(audioCtx.destination);
+
+  gainNode = this.audioCtx.createGain();
+  gainNode.connect(audioCtx.destination);
+  gainNode.gain.value =  0.5;
+
+
+
+
+
+  const = audioCtx.createMediaElementSource(this.audioElement);
+
+
+  const[playing, setPlaying] = useState(false)
+  const [playInLoop, setPlayInLoop] = useState(true);
+  const [_showControls, _setShowControls] = useState(false);
+>>>>>>> Stashed changes
 
     const playAudio = () => {
         setAudioPlaying(true);
@@ -48,7 +73,22 @@ export default function Music(props) {
             </div>
         )
     }
+<<<<<<< Updated upstream
   
+=======
+  };
+
+  const toggleControls = () => {
+      _setShowControls(!_showControls);
+  }
+
+  const handleClick = () => {
+    toggleAudio();
+    toggleControls();
+  };
+
+  const showControls = () => {
+>>>>>>> Stashed changes
     return (
     <div>
         <svg onClick={handleClick} viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
