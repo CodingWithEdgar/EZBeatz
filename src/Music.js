@@ -9,19 +9,26 @@ export default function Music(props) {
   // load audio file on component load
   useEffect(() => {
       audioTune.load();
-  }, [audioTune])
+  })
 
   // set the loop of audio tune
   useEffect(() => {
     audioTune.loop = playInLoop;
-  }, [playInLoop, audioTune])
+  }, [playInLoop])
 
+  const sleep = (milliseconds) => {
+    return new Promise(resolve => setTimeout(resolve, milliseconds))
+  }
 
-  const playAudio = () => {
-    console.log("play")
+  async function playAudio() {
+    if (props.seconds !== 0) {
+      console.log("before")
+      await sleep((8 - props.seconds + 1) * 1000)
+      console.log("hit")
+    }
     setPlaying(true);
     audioTune.play();
-  };
+  }
 
   const stopAudio = () => {
     setPlaying(false);
@@ -80,3 +87,4 @@ export default function Music(props) {
     </div>
   );
 }
+

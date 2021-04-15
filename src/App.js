@@ -1,10 +1,35 @@
-import './App.css';
-import React from 'react';
-import Music from './Music';
-import kick from "./samples/trad_kick_01_C.wav";
-
+import "./App.css";
+import Music from "./Music";
+import gabeKick from "./samples/Gabriel Set 2/808 kick.wav";
+import gabeBeep from "./samples/Gabriel Set 2/beep beep.wav";
+import gabeClaps from "./samples/Gabriel Set 2/claps.wav";
+import gabeShaker from "./samples/Gabriel Set 2/shaker and bell.wav";
+import gabeToms from "./samples/Gabriel Set 2/toms and claps.wav";
+import gabeHiHat from "./samples/Gabriel Set 2/triplet hi hats.wav";
+import React, { useState, useEffect } from "react";
 
 function App() {
+  const [seconds, setSeconds] = useState(0);
+  const [isActive] = useState(true);
+
+  useEffect(() => {
+    let interval = null;
+    if (isActive) {
+      interval = setInterval(() => {
+        setSeconds((seconds) => seconds + 1);
+      }, 1000);
+    } else if (!isActive && seconds !== 0) {
+      clearInterval(interval);
+    }
+    return () => clearInterval(interval);
+  }, [isActive, seconds]);
+
+  // timer used for consistent sounds
+  useEffect(() => {
+    if (seconds === 9) {
+      setSeconds(0);
+    }
+  }, [seconds]);
 
   return (
     <div className="App bg-dark container-fluid text-light">
@@ -44,72 +69,33 @@ function App() {
           </div>
         </div>
       </nav>
-      <h1>Click a Circle to Begin!</h1>
+      <div className="row">
+        <div className="col-11"></div>
+        <div className="text-light col">{seconds}s</div>
+      </div>
+      <h1>Click a Circle to Begin! </h1>
       <div className="row">
         <div className="col">
-          {
-            <Music
-              audio={kick}
-              color="pink"
-              text="Kick"
-              url="../public/samples/trad_kick_01_C.wav"
-            />
-          }
+          {<Music seconds={seconds} audio={gabeKick} color="pink" text="Kick" />}
         </div>
         <div className="col">
-          {
-            <Music
-              audio={kick}
-              color="green"
-              text="Kick"
-              url="../public/samples/trad_kick_01_C.wav"
-            />
-          }
+          {<Music seconds={seconds} audio={gabeBeep} color="green" text="Kick" />}
         </div>
         <div className="col">
-          {
-            <Music
-              audio={kick}
-              color="red"
-              text="Kick"
-              url="../public/samples/trad_kick_01_C.wav"
-            />
-          }
+          {<Music seconds={seconds} audio={gabeClaps} color="red" text="Kick" />}
         </div>
         <div className="col">
-          {
-            <Music
-              audio={kick}
-              color="yellow"
-              text="Kick"
-              url="../public/samples/trad_kick_01_C.wav"
-            />
-          }
+          {<Music seconds={seconds} audio={gabeHiHat} color="yellow" text="Kick" />}
         </div>
         <div className="col">
-          {
-            <Music
-              audio={kick}
-              color="purple"
-              text="Kick"
-              url="../public/samples/trad_kick_01_C.wav"
-            />
-          }
+          {<Music seconds={seconds} audio={gabeToms} color="purple" text="Kick" />}
         </div>
         <div className="col">
-          {
-            <Music
-              audio={kick}
-              color="orange"
-              text="Kick"
-              url="../public/samples/trad_kick_01_C.wav"
-            />
-          }
+          {<Music seconds={seconds} audio={gabeShaker} color="orange" text="Kick" />}
         </div>
       </div>
     </div>
   );
 }
-
 
 export default App;
