@@ -1,5 +1,6 @@
 import './App.css';
 import React from 'react';
+import Music from './Music';
 
 
 function App() {
@@ -49,6 +50,8 @@ function App() {
             </svg>
             <button type="button" className="btn btn-primary">
               Reverb
+              <br></br>
+              <input type="range" />
             </button>
             <button type="button" className="btn btn-success">
               Volume
@@ -67,6 +70,8 @@ function App() {
             </svg>
             <button type="button" className="btn btn-primary">
               Reverb
+              <br></br>
+              <input type="range" />
             </button>
             <button type="button" className="btn btn-success">
               Volume
@@ -85,6 +90,8 @@ function App() {
             </svg>
             <button type="button" className="btn btn-primary">
               Reverb
+              <br></br>
+              <input type="range" />
             </button>
             <button type="button" className="btn btn-success">
               Volume
@@ -103,6 +110,8 @@ function App() {
             </svg>
             <button type="button" className="btn btn-primary">
               Reverb
+              <br></br>
+              <input type="range" />
             </button>
             <button type="button" className="btn btn-success">
               Volume
@@ -122,33 +131,21 @@ function App() {
         <h1>Sounds</h1>
         <div className="row">
           <div className="col">
-            <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-              <circle fill="pink" cx="10" cy="10" r="5" />
-            </svg>
+            {<Music color="pink" text="Kick" url="../public/samples/trad_kick_01_C.wav"/>}
           </div>
           <div className="col">
-            <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-              <circle fill="green" cx="10" cy="10" r="5" />
-            </svg>
+            {<Music color="green" text="Kick" url="../public/samples/trad_kick_01_C.wav"/>}
           </div><div className="col">
-            <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-              <circle fill="red" cx="10" cy="10" r="5" />
-            </svg>
+            {<Music color="red" text="Kick" url="../public/samples/trad_kick_01_C.wav"/>}
           </div>
           <div className="col">
-            <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-              <circle fill="yellow" cx="10" cy="10" r="5" />
-            </svg>
+            {<Music color="yellow" text="Kick" url="../public/samples/trad_kick_01_C.wav"/>}
           </div>
           <div className="col">
-            <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-              <circle fill="purple" cx="10" cy="10" r="5" />
-            </svg>
+            {<Music color="purple" text="Kick" url="../public/samples/trad_kick_01_C.wav"/>}
           </div>
           <div className="col">
-            <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-              <circle fill="orange" cx="10" cy="10" r="5" />
-            </svg>
+            {<Music color="orange" text="Kick" url="../public/samples/trad_kick_01_C.wav"/>}
           </div>
         </div>
       </div>
