@@ -13,9 +13,63 @@ export default function Music(props) {
 
 
 
+
+  const url = 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/858/outfoxing.mp3';
+
+  var AudioContext = (window.AudioContext || window.webkitAudioContext);
+  const audioCtx = new AudioContext();
+  //const audioElement =
+
+
+  const [vol, setVolume] = useState(0);
+  const [pan, setPan] = useState(-1);
+  const [freq, setFreq] = useState(800);
+  const [audioElement, setAudio] = useState(new Audio(url));
+
+  //const audioElement = new Audio(url);
+
+const createContext = () =>{
+
+  const track = audioCtx.createMediaElementSource(audioElement);
+
+    track.connect(audioCtx.destination);
+
+    const volume = audioCtx.createGain();
+    volume.connect(audioCtx.destination);
+    volume.gain.value =  vol;
+
+
+    const panner = new StereoPannerNode(audioCtx, {pan: pan});
+    track.connect(panner);
+    panner.connect(audioCtx.destination);
+
+
+        //reverb
+        //https://middleearmedia.com/web-audio-api-convolver-node/
+    var convolver = audioCtx.createConvolver();
+    console.log(volume);
+
+        //filter
+    const filter = audioCtx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.value = freq;
+    filter.connect(audioCtx.destination);
+
+
+    //audioElement.play()
+        //track.start();
+  };
+
+
+
+
+
+
+
   // load audio file on component load
   useEffect(() => {
-      audioTune.load();
+      //audioTune.load();
+      createContext();
   }, [audioTune])
 
   // set the loop of audio tune
@@ -27,7 +81,8 @@ export default function Music(props) {
   const playAudio = () => {
     console.log("play")
     setPlaying(true);
-    audioTune.play();
+    audioElement.play();
+    //audioTune.play();
   };
 
   const stopAudio = () => {
@@ -92,6 +147,9 @@ export default function Music(props) {
       <div className="btn-group-vertical col">
         <button type="button" className="btn btn-primary">
           Reverb
+        </button>
+        <button type="button" onClick={createContext}>
+          onto
         </button>
         <button type="button" className="btn btn-success">
           Volume
