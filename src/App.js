@@ -1,8 +1,11 @@
 import './App.css';
 import React from 'react';
+import Music from './Music';
+import kick from "./samples/trad_kick_01_C.wav";
 
 
 function App() {
+
   return (
     <div className="App bg-dark container-fluid text-light">
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -41,115 +44,67 @@ function App() {
           </div>
         </div>
       </nav>
-      <div className="container">
-        <div className="row">
-          <div className="btn-group-vertical col">
-            <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-              <circle fill="grey" cx="10" cy="10" r="5" />
-            </svg>
-            <button type="button" className="btn btn-primary">
-              Reverb
-            </button>
-            <button type="button" className="btn btn-success">
-              Volume
-              <br></br>
-              <input type="range" />
-            </button>
-            <button type="button" className="btn btn-warning">
-              Panning
-              <br></br>
-              <input type="range" />
-            </button>
-          </div>
-          <div className="btn-group-vertical col">
-            <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-              <circle fill="grey" cx="10" cy="10" r="5" />
-            </svg>
-            <button type="button" className="btn btn-primary">
-              Reverb
-            </button>
-            <button type="button" className="btn btn-success">
-              Volume
-              <br></br>
-              <input type="range" />
-            </button>
-            <button type="button" className="btn btn-warning">
-              Panning
-              <br></br>
-              <input type="range" />
-            </button>
-          </div>
-          <div className="btn-group-vertical col">
-            <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-              <circle fill="grey" cx="10" cy="10" r="5" />
-            </svg>
-            <button type="button" className="btn btn-primary">
-              Reverb
-            </button>
-            <button type="button" className="btn btn-success">
-              Volume
-              <br></br>
-              <input type="range" />
-            </button>
-            <button type="button" className="btn btn-warning">
-              Panning
-              <br></br>
-              <input type="range" />
-            </button>
-          </div>
-          <div className="btn-group-vertical col">
-            <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-              <circle fill="grey" cx="10" cy="10" r="5" />
-            </svg>
-            <button type="button" className="btn btn-primary">
-              Reverb
-            </button>
-            <button type="button" className="btn btn-success">
-              Volume
-              <br></br>
-              <input type="range" />
-            </button>
-            <button type="button" className="btn btn-warning">
-              Panning
-              <br></br>
-              <input type="range" />
-            </button>
-          </div>
+      <h1>Click a Circle to Begin!</h1>
+      <div className="row">
+        <div className="col">
+          {
+            <Music
+              audio={kick}
+              color="pink"
+              text="Kick"
+              url="../public/samples/trad_kick_01_C.wav"
+            />
+          }
         </div>
-        <br></br>
-        <br></br>
-        <br></br>
-        <h1>Sounds</h1>
-        <div className="row">
-          <div className="col">
-            <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-              <circle fill="pink" cx="10" cy="10" r="5" />
-            </svg>
-          </div>
-          <div className="col">
-            <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-              <circle fill="green" cx="10" cy="10" r="5" />
-            </svg>
-          </div><div className="col">
-            <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-              <circle fill="red" cx="10" cy="10" r="5" />
-            </svg>
-          </div>
-          <div className="col">
-            <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-              <circle fill="yellow" cx="10" cy="10" r="5" />
-            </svg>
-          </div>
-          <div className="col">
-            <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-              <circle fill="purple" cx="10" cy="10" r="5" />
-            </svg>
-          </div>
-          <div className="col">
-            <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-              <circle fill="orange" cx="10" cy="10" r="5" />
-            </svg>
-          </div>
+        <div className="col">
+          {
+            <Music
+              audio={kick}
+              color="green"
+              text="Kick"
+              url="../public/samples/trad_kick_01_C.wav"
+            />
+          }
+        </div>
+        <div className="col">
+          {
+            <Music
+              audio={kick}
+              color="red"
+              text="Kick"
+              url="../public/samples/trad_kick_01_C.wav"
+            />
+          }
+        </div>
+        <div className="col">
+          {
+            <Music
+              audio={kick}
+              color="yellow"
+              text="Kick"
+              url="../public/samples/trad_kick_01_C.wav"
+            />
+          }
+        </div>
+        <div className="col">
+          {
+            <Music
+              audio={kick}
+              color="purple"
+              text="Kick"
+              url="../public/samples/trad_kick_01_C.wav"
+            />
+          }
+        </div>
+        <div className="col">
+          {
+            <Music
+              audio={kick}
+              color="orange"
+              text="Kick"
+              url="../public/samples/trad_kick_01_C.wav"
+            />
+          }
         </div>
       </div>
     </div>
