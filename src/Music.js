@@ -1,77 +1,82 @@
-import React, { useState } from "react";
-import kick from './samples/trad_kick_01_C.wav'
+import React, {useEffect, useState} from "react";
 
 export default function Music(props) {
-    const [audioPlaying, setAudioPlaying] = useState(false);
+  const audioTune = new Audio(props.audio);
+  const[playing, setPlaying] = useState(false)
+  const [playInLoop, setPlayInLoop] = useState(true);
+  const [_showControls, _setShowControls] = useState(false);
 
-    const playAudio = () => {
-        setAudioPlaying(true);
-        const audioEl = document.getElementsByClassName("audio-element")[0];
-        audioEl.play();
-    }
+  // load audio file on component load
+  useEffect(() => {
+      audioTune.load();
+  }, [audioTune])
 
-    const pauseAudio = () => {
-        setAudioPlaying(false);
-        const audioEl = document.getElementsByClassName("audio-element")[0];
-        audioEl.pause();
-    }
+  // set the loop of audio tune
+  useEffect(() => {
+    audioTune.loop = playInLoop;
+  }, [playInLoop, audioTune])
 
-    const toggleAudio = () => {
-        if (!audioPlaying) {
-            playAudio();
-        } else {
-            pauseAudio();
-        }
-    }
 
-    const handleClick = () => {
-        toggleAudio();
-        showControls();
-    }
+  const playAudio = () => {
+    console.log("play")
+    setPlaying(true);
+    audioTune.play();
+  };
 
-    const showControls = () => {
-        return ( 
-            <div className="btn-group-vertical col">
-                <button type="button" className="btn btn-primary">
-                    Reverb
-                </button>
-                <button type="button" className="btn btn-success">
-                    Volume
-                <br></br>
-                <input type="range" />
-                </button>
-                <button type="button" className="btn btn-warning">
-                    Panning
-                <br></br>
-                <input type="range" />
-                </button>
-            </div>
-        )
+  const stopAudio = () => {
+    setPlaying(false);
+    setPlayInLoop(false);
+    audioTune.pause();
+    audioTune.currentTime = 0;
+    console.log("pause")
+  };
+
+  const toggleAudio = () => {
+    if (!playing) {
+      playAudio();
+    } else {
+      stopAudio();
     }
+  };
   
+  const toggleControls = () => {
+      _setShowControls(!_showControls);
+  }
+
+  const handleClick = () => {
+    toggleAudio();
+    toggleControls();
+  };
+
+  const showControls = () => {
     return (
-    <div>
-        <svg onClick={handleClick} viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-            <circle fill={props.color} cx="10" cy="10" r="5" ></circle>
-        </svg>
-        <audio loop className="audio-element">
-        <source src={kick}></source>
-        </audio>
+      <div className="btn-group-vertical col">
         <button type="button" className="btn btn-primary">
-            Reverb
-            <br></br>
-            <input type="range" />
-            </button>
-            <button type="button" className="btn btn-success">
-            Volume
-            <br></br>
-            <input type="range" />
-            </button>
-            <button type="button" className="btn btn-warning">
-            Panning
-            <br></br>
-            <input type="range" />
-            </button>
-    </div>
+          Reverb
+        </button>
+        <button type="button" className="btn btn-success">
+          Volume
+          <br></br>
+          <input type="range" />
+        </button>
+        <button type="button" className="btn btn-warning">
+          Panning
+          <br></br>
+          <input type="range" />
+        </button>
+      </div>
     );
+  };
+
+  return (
+    <div>
+      <svg
+        onClick={handleClick}
+        viewBox="0 0 20 20"
+        xmlns="http://www.w3.org/2000/svg">
+        <circle fill={props.color} cx="10" cy="10" r="5"></circle>
+      </svg>
+      {_showControls ? showControls() : null}
+    </div>
+  );
 }
