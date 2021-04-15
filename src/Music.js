@@ -6,6 +6,9 @@ export default function Music(props) {
   const[playing, setPlaying] = useState(false)
   const [playInLoop, setPlayInLoop] = useState(true);
   const [_showControls, _setShowControls] = useState(false);
+  const [vol, setVolume] = useState(.3);
+  const [pan, setPan] = useState(.7);
+  const [freq, setFreq] = useState(5000);
 
 
 
@@ -44,22 +47,21 @@ export default function Music(props) {
 
     const volume = audioCtx.createGain();
     volume.connect(audioCtx.destination);
-    volume.gain.value =  0.5;
+    volume.gain.value =  vol;
 
 
-    const panner = new StereoPannerNode(audioCtx, {pan: 0});
+    const panner = new StereoPannerNode(audioCtx, {pan: pan});
     panner.connect(audioCtx.destination);
 
     //reverb
     //https://middleearmedia.com/web-audio-api-convolver-node/
     var convolver = audioCtx.createConvolver();
-
+    console.log(volume);
 
     //filter
-    let bandHz = 5000;
     const filter = audioCtx.createBiquadFilter();
     filter.type = 'lowpass';
-    filter.frequency.value = bandHz;
+    filter.frequency.value = freq;
     filter.connect(audioCtx.destination);
 
 
