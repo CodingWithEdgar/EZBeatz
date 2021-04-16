@@ -34,7 +34,7 @@ function App() {
         <div className="col-11"></div>
         <div className="text-light col">{seconds}s</div>
       </div>
-      <h1>Click a Circle to Begin! </h1>
+      <h1>Pick a sample set above then click a circle to begin! </h1>
       <Switch>
         <Route path="/gabriel">
           <Gabriel seconds={seconds} />

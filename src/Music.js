@@ -91,7 +91,9 @@ export default function Music(props) {
 
   async function playAudio() {
     if (props.seconds !== 0) {
+      console.log("before wait")
       await sleep((8 - props.seconds + 1) * 1000)
+      console.log("after wait")
     }
     setPlaying(true);
     //audioTune.play();
