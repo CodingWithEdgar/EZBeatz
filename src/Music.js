@@ -5,7 +5,8 @@ export default function Music(props) {
   const[playing, setPlaying] = useState(false)
   const [playInLoop, setPlayInLoop] = useState(true);
   const [_showControls, _setShowControls] = useState(false);
-
+  const [vol, setVolume] = useState(.4);
+  const [pan, setPan] = useState(0);
 
   const afunc = () => {
 
@@ -29,12 +30,13 @@ export default function Music(props) {
 
 
     const panner = audioCtx.createStereoPanner();
-    panner.pan.setValueAtTime(1, audioCtx.currentTime);
+    panner.pan.setValueAtTime(pan, audioCtx.currentTime);
+    console.log(pan);
     //gainNode.connect(panner);
     gainNode.connect(panner);
     panner.connect(audioCtx.destination);
 
-    /**
+
 
     const filter = audioCtx.createBiquadFilter();
     filter.type = "lowpass";
@@ -42,34 +44,6 @@ export default function Music(props) {
 
     panner.connect(filter);
     filter.connect(audioCtx.destination);
-
-/**
-
-    c
-
-
-
-
-
-
-    source.connect(filter);
-    filter.connect(audioCtx.destination);
-    **/
-
-/**
-    //source.connect(gainNode);
-    source.connect(gainNode);
-    //source.connect(panner);
-    gainNode.connect(panner);
-
-
-    panner.connect(filter);
-
-    filter.connect(audioCtx.destination);
-
-
-    //filter.gain.value = 25;
-**/
 
 
     audioElement.play();
@@ -94,6 +68,7 @@ export default function Music(props) {
       console.log("before")
       await sleep((8 - props.seconds + 1) * 1000)
       console.log("hit")
+      console.log(pan)
     }
     setPlaying(true);
     //audioTune.play();
@@ -131,12 +106,19 @@ export default function Music(props) {
         <button type="button" className="btn btn-primary">
           Reverb
         </button>
+
         <button type="button" className="btn btn-success">
           Volume
           <br></br>
-          <input type="range" />
+          <input type="range" min="0" max="100"
+          onChange ={(e) =>setPan(e.target.value/100)} />
         </button>
-        <button type="button" className="btn btn-warning">
+
+
+        <button type="button" className="btn btn-warning"
+        >
+
+
           Panning
           <br></br>
           <input type="range" />
