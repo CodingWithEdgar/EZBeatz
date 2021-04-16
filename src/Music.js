@@ -5,8 +5,9 @@ export default function Music(props) {
   const[playing, setPlaying] = useState(false)
   const [playInLoop, setPlayInLoop] = useState(true);
   const [_showControls, _setShowControls] = useState(false);
-  const [vol, setVolume] = useState(.4);
+  const [vol, setVol] = useState(.4);
   const [pan, setPan] = useState(0);
+  const [freq, setFreq] = useState(1200);
 
   const afunc = () => {
 
@@ -23,8 +24,8 @@ export default function Music(props) {
     source.connect(audioCtx.destination);
 
     const gainNode = audioCtx.createGain();
-    gainNode.gain.value = .9;
-
+    gainNode.gain.value = vol;
+    console.log(vol);
     source.connect(gainNode);
     //gainNode.connect(audioCtx.destination);
 
@@ -32,15 +33,17 @@ export default function Music(props) {
     const panner = audioCtx.createStereoPanner();
     panner.pan.setValueAtTime(pan, audioCtx.currentTime);
     console.log(pan);
-    //gainNode.connect(panner);
+
+
     gainNode.connect(panner);
     panner.connect(audioCtx.destination);
 
-
-
     const filter = audioCtx.createBiquadFilter();
     filter.type = "lowpass";
-    filter.frequency.value = 1500;
+    filter.frequency.setValueAtTime(freq, audioCtx.currentTime);
+    filter.gain.setValueAtTime(39, audioCtx.currentTime);
+
+    console.log(freq);
 
     panner.connect(filter);
     filter.connect(audioCtx.destination);
@@ -104,14 +107,17 @@ export default function Music(props) {
     return (
       <div className="btn-group-vertical col">
         <button type="button" className="btn btn-primary">
-          Reverb
+          filter
+          <br></br>
+          <input type="range" min="0" max="100"
+          onChange ={(e) =>setFreq(e.target.value * 119)} />
         </button>
 
         <button type="button" className="btn btn-success">
           Volume
           <br></br>
           <input type="range" min="0" max="100"
-          onChange ={(e) =>setPan(e.target.value/100)} />
+          onChange ={(e) =>setVol(e.target.value/100)} />
         </button>
 
 
@@ -121,7 +127,10 @@ export default function Music(props) {
 
           Panning
           <br></br>
-          <input type="range" />
+          <input
+          type="range"  min="0" max="100"
+          onChange ={(e) =>setPan(e.target.value/100)}
+          />
         </button>
       </div>
     );
