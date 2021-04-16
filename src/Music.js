@@ -66,6 +66,38 @@ const createContext = () =>{
 
 
 
+
+
+  const afunc = () => {
+
+    const url = 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/858/outfoxing.mp3';
+
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const audioCtx = new AudioContext();
+    //onst audioElement = new Audio(url);
+    //audioElement.crossOrigin = "anonymous";
+    const audioElement =  new Audio(props.audio);//new Audio("trad_kick_01_C.wav");
+
+    const source = audioCtx.createMediaElementSource(audioElement);
+
+    source.connect(audioCtx.destination);
+
+    //const gainNode = audioCtx.createGain();
+    //this.gainNode.connect(this.audioCtx.destination);
+
+    const panner = audioCtx.createStereoPanner();//new StereoPannerNode(audioCtx, {pan: 1});
+    panner.pan.setValueAtTime(-.999, audioCtx.currentTime);
+
+    source.connect(panner);
+    panner.connect(audioCtx.destination);
+
+    console.log("ughhhhhh");
+    console.log(audioElement);
+    audioElement.play();
+      //this.gainNode.gain.value =  0.5;
+  }
+
+
   // load audio file on component load
   useEffect(() => {
       //audioTune.load();
@@ -81,9 +113,15 @@ const createContext = () =>{
   const playAudio = () => {
     console.log("play")
     setPlaying(true);
+<<<<<<< Updated upstream
     audioElement.play();
     //audioTune.play();
   };
+=======
+    //audioTune.play();
+    afunc();
+  }
+>>>>>>> Stashed changes
 
   const stopAudio = () => {
     setPlaying(false);
