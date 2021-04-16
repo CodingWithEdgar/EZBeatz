@@ -22,9 +22,7 @@ export default function Music(props) {
 
   async function playAudio() {
     if (props.seconds !== 0) {
-      console.log("before")
       await sleep((8 - props.seconds + 1) * 1000)
-      console.log("hit")
     }
     setPlaying(true);
     audioTune.play();
@@ -35,7 +33,7 @@ export default function Music(props) {
     setPlayInLoop(false);
     audioTune.pause();
     audioTune.currentTime = 0;
-    console.log("pause")
+    console.log("pause");
   };
 
   const toggleAudio = () => {
