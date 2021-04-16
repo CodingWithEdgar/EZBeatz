@@ -6,6 +6,38 @@ export default function Music(props) {
   const [playInLoop, setPlayInLoop] = useState(true);
   const [_showControls, _setShowControls] = useState(false);
 
+
+  const afunc = () => {
+
+    const url = 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/858/outfoxing.mp3';
+
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const audioCtx = new AudioContext();
+    //onst audioElement = new Audio(url);
+    //audioElement.crossOrigin = "anonymous";
+    const audioElement =  new Audio(props.audio);//new Audio("trad_kick_01_C.wav");
+
+    const source = audioCtx.createMediaElementSource(audioElement);
+
+    source.connect(audioCtx.destination);
+
+    const gainNode = audioCtx.createGain();
+    gainNode.gain.value =  -0.8;
+
+    source.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+
+    const panner = audioCtx.createStereoPanner();
+    panner.pan.setValueAtTime(-.999, audioCtx.currentTime);
+
+    source.connect(panner);
+    panner.connect(audioCtx.destination);
+
+    console.log("ughhhhhh");
+    console.log(audioElement);
+    audioElement.play();
+  }
+
   // load audio file on component load
   useEffect(() => {
       audioTune.load();
@@ -27,7 +59,8 @@ export default function Music(props) {
       console.log("hit")
     }
     setPlaying(true);
-    audioTune.play();
+    //audioTune.play();
+    afunc();
   }
 
   const stopAudio = () => {
@@ -45,7 +78,7 @@ export default function Music(props) {
       stopAudio();
     }
   };
-  
+
   const toggleControls = () => {
       _setShowControls(!_showControls);
   }
@@ -87,4 +120,3 @@ export default function Music(props) {
     </div>
   );
 }
-
