@@ -35,15 +35,17 @@ export default function Music(props) {
      gainNode.connect(panner);
      panner.connect(audioCtx.destination);
 
+
      const filter = audioCtx.createBiquadFilter();
      filter.type = "lowpass";
      filter.frequency.setValueAtTime(freq, audioCtx.currentTime);
      filter.gain.setValueAtTime(39, audioCtx.currentTime);
 
      console.log(freq);
-
      panner.connect(filter);
-     filter.connect(audioCtx.destination);
+
+     //panner.connect(filter);
+     //filter.connect(audioCtx.destination);
 
      audioElement.play();
   }
