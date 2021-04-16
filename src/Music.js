@@ -102,7 +102,7 @@ export default function Music(props) {
     return (
       <div className="btn-group-vertical col">
         <button type="button" className="btn btn-primary">
-          Reverb
+          Filter
           <br></br>
           <input type="range" min="0" max="100"
           onChange ={(e) =>setFreq(e.target.value * 119)} />
@@ -111,14 +111,14 @@ export default function Music(props) {
         <button type="button" className="btn btn-success">
           Volume
           <br></br>
-          <input type="range" min="0" max="100"
+          <input type="range" min="-100" max="100"
          onChange ={(e) =>setVol(e.target.value/100)} />
         </button>
         <button type="button" className="btn btn-warning">
           Panning
           <br></br>
           <input
-          type="range"  min="0" max="100"
+          type="range"  min="-100" max="100"
           onChange ={(e) =>setPan(e.target.value/100)}
           />
         </button>
