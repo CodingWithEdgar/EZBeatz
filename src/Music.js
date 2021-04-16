@@ -9,7 +9,7 @@ export default function Music(props) {
 
   const afunc = () => {
 
-    const url = 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/858/outfoxing.mp3';
+    //const url = 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/858/outfoxing.mp3';
 
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     const audioCtx = new AudioContext();
@@ -22,19 +22,56 @@ export default function Music(props) {
     source.connect(audioCtx.destination);
 
     const gainNode = audioCtx.createGain();
-    gainNode.gain.value =  -0.8;
+    gainNode.gain.value = .9;
 
     source.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
+    //gainNode.connect(audioCtx.destination);
+
 
     const panner = audioCtx.createStereoPanner();
-    panner.pan.setValueAtTime(-.999, audioCtx.currentTime);
-
-    source.connect(panner);
+    panner.pan.setValueAtTime(1, audioCtx.currentTime);
+    //gainNode.connect(panner);
+    gainNode.connect(panner);
     panner.connect(audioCtx.destination);
 
-    console.log("ughhhhhh");
-    console.log(audioElement);
+    /**
+
+    const filter = audioCtx.createBiquadFilter();
+    filter.type = "lowpass";
+    filter.frequency.value = 1500;
+
+    panner.connect(filter);
+    filter.connect(audioCtx.destination);
+
+/**
+
+    c
+
+
+
+
+
+
+    source.connect(filter);
+    filter.connect(audioCtx.destination);
+    **/
+
+/**
+    //source.connect(gainNode);
+    source.connect(gainNode);
+    //source.connect(panner);
+    gainNode.connect(panner);
+
+
+    panner.connect(filter);
+
+    filter.connect(audioCtx.destination);
+
+
+    //filter.gain.value = 25;
+**/
+
+
     audioElement.play();
   }
 
