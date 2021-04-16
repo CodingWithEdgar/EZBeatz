@@ -5,51 +5,49 @@ export default function Music(props) {
   const[playing, setPlaying] = useState(false)
   const [playInLoop, setPlayInLoop] = useState(true);
   const [_showControls, _setShowControls] = useState(false);
-  const [vol, setVol] = useState(.4);
-  const [pan, setPan] = useState(0);
-  const [freq, setFreq] = useState(1200);
-
-  const afunc = () => {
-
-    //const url = 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/858/outfoxing.mp3';
-
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    const audioCtx = new AudioContext();
-    //onst audioElement = new Audio(url);
-    //audioElement.crossOrigin = "anonymous";
-    const audioElement =  new Audio(props.audio);//new Audio("trad_kick_01_C.wav");
-
-    const source = audioCtx.createMediaElementSource(audioElement);
-
-    source.connect(audioCtx.destination);
-
-    const gainNode = audioCtx.createGain();
-    gainNode.gain.value = vol;
-    console.log(vol);
-    source.connect(gainNode);
-    //gainNode.connect(audioCtx.destination);
+  const [vol, setVol] = useState(0);
+   const [pan, setPan] = useState(0);
+   const [freq, setFreq] = useState(1200);
 
 
-    const panner = audioCtx.createStereoPanner();
-    panner.pan.setValueAtTime(pan, audioCtx.currentTime);
-    console.log(pan);
+   const afunc = () => {
+
+     const AudioContext = window.AudioContext || window.webkitAudioContext;
+     const audioCtx = new AudioContext();
+
+     const audioElement =  new Audio(props.audio);//new Audio("trad_kick_01_C.wav");
+
+     const source = audioCtx.createMediaElementSource(audioElement);
+
+     source.connect(audioCtx.destination);
+
+     const gainNode = audioCtx.createGain();
+     gainNode.gain.value = vol;
+     console.log(vol);
+     source.connect(gainNode);
 
 
-    gainNode.connect(panner);
-    panner.connect(audioCtx.destination);
-
-    const filter = audioCtx.createBiquadFilter();
-    filter.type = "lowpass";
-    filter.frequency.setValueAtTime(freq, audioCtx.currentTime);
-    filter.gain.setValueAtTime(39, audioCtx.currentTime);
-
-    console.log(freq);
-
-    panner.connect(filter);
-    filter.connect(audioCtx.destination);
+     const panner = audioCtx.createStereoPanner();
+     panner.pan.setValueAtTime(pan, audioCtx.currentTime);
+     console.log(pan);
 
 
-    audioElement.play();
+     gainNode.connect(panner);
+     panner.connect(audioCtx.destination);
+
+
+     const filter = audioCtx.createBiquadFilter();
+     filter.type = "lowpass";
+     filter.frequency.setValueAtTime(freq, audioCtx.currentTime);
+     filter.gain.setValueAtTime(39, audioCtx.currentTime);
+
+     console.log(freq);
+     panner.connect(filter);
+
+     //panner.connect(filter);
+     //filter.connect(audioCtx.destination);
+
+     audioElement.play();
   }
 
   // load audio file on component load
@@ -68,10 +66,9 @@ export default function Music(props) {
 
   async function playAudio() {
     if (props.seconds !== 0) {
-      console.log("before")
+      console.log("before wait")
       await sleep((8 - props.seconds + 1) * 1000)
-      console.log("hit")
-      console.log(pan)
+      console.log("after wait")
     }
     setPlaying(true);
     //audioTune.play();
@@ -83,7 +80,7 @@ export default function Music(props) {
     setPlayInLoop(false);
     audioTune.pause();
     audioTune.currentTime = 0;
-    console.log("pause")
+    console.log("pause");
   };
 
   const toggleAudio = () => {
@@ -107,28 +104,23 @@ export default function Music(props) {
     return (
       <div className="btn-group-vertical col">
         <button type="button" className="btn btn-primary">
-          filter
+          Filter
           <br></br>
           <input type="range" min="0" max="100"
           onChange ={(e) =>setFreq(e.target.value * 119)} />
-        </button>
 
+        </button>
         <button type="button" className="btn btn-success">
           Volume
           <br></br>
-          <input type="range" min="0" max="100"
-          onChange ={(e) =>setVol(e.target.value/100)} />
+          <input type="range" min="-100" max="100"
+         onChange ={(e) =>setVol(e.target.value/100)} />
         </button>
-
-
-        <button type="button" className="btn btn-warning"
-        >
-
-
+        <button type="button" className="btn btn-warning">
           Panning
           <br></br>
           <input
-          type="range"  min="0" max="100"
+          type="range"  min="-100" max="100"
           onChange ={(e) =>setPan(e.target.value/100)}
           />
         </button>
