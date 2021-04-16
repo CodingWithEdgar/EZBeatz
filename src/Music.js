@@ -46,11 +46,6 @@ export default function Music(props) {
      filter.connect(audioCtx.destination);
 
      audioElement.play();
-   }
-
-
-
-    audioElement.play();
   }
 
   // load audio file on component load
