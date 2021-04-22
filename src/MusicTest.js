@@ -1,5 +1,5 @@
 import gabeKick1 from "./samples/Gabriel Set 1/808 kick.mp3";
-
+import drumImg from "./images/drum_1in.jpg"
 
 function MusicTest() {
     const audioElement =  new Audio(gabeKick1);
@@ -7,12 +7,12 @@ function MusicTest() {
     var gainNode = null;
     var panNode = null;
     var freqNode = null;
-    
 
     const createAudioContext = () => {
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         audioCtx = new AudioContext();
     }
+
     const initNodes = () => {
         const source = audioCtx.createMediaElementSource(audioElement);
         source.connect(audioCtx.destination);
@@ -53,24 +53,64 @@ function MusicTest() {
     }
 
     return (
-        <div>
-            <button className="btn btn-secondary" onClick={createAudioContext}>
-                Start
-            </button>
-            <button className="btn btn-success" onClick={initNodes}>
-                Choose Song
-            </button>
-            <input onChange={updateGain} className="gainControl" step="0.01" type="range" min="-1" max="1"/>
-            <input onChange={updatePanner} className="panControl" step="0.01" type="range" min="-1" max="1"/>
-            <input onChange={updateFrequency} className="freqControl" type="range" min="0" max="22000"/>
-            <button className="btn btn-primary" onClick={() => audioElement.play()}>
-                Play
-            </button>
-            <button className="btn btn-danger" onClick={() => audioElement.pause()}>
-                Pause
-            </button>
-        </div>
-    )
+      <div className="btn-group-vertical col">
+        <button className="btn btn-secondary" onClick={createAudioContext}>
+          Start
+        </button>
+        <br></br>
+        <button className="btn btn-dark rounded-circle" onClick={initNodes}>
+          <img
+            className="rounded-circle"
+            src={drumImg}
+            alt="Drum"
+            width="200"
+            height="200"
+          />
+        </button>
+        <span className="btn btn-info text-light">
+          Panning
+          <br></br>
+          <input
+            onChange={updatePanner}
+            className="panControl"
+            step="0.01"
+            type="range"
+            min="-1"
+            max="1"
+          />
+        </span>
+        <span className="btn btn-warning text-light">
+          Gain
+          <br></br>
+          <input
+            onChange={updateGain}
+            className="gainControl"
+            step="0.01"
+            type="range"
+            min="-1"
+            max="1"
+          />
+        </span>
+
+        <span className="btn btn-primary text-light">
+          Filter
+          <br></br>
+          <input
+            onChange={updateFrequency}
+            className="freqControl"
+            type="range"
+            min="0"
+            max="22000"
+          />
+        </span>
+        <button className="btn btn-light" onClick={() => audioElement.play()}>
+          Play
+        </button>
+        <button className="btn btn-danger" onClick={() => audioElement.pause()}>
+          Pause
+        </button>
+      </div>
+    );
 
 }
 
