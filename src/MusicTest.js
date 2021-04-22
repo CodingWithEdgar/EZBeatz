@@ -1,15 +1,21 @@
 import drumImg from "./images/drum_1in.jpg";
-import React, {useState} from 'react';
+import React from 'react';
+import nextId, {setPrefix} from "react-id-generator";
+
 
 const MusicTest = React.memo(
   function MusicTest(props) {
     const audioElement =  new Audio(props.src);
     audioElement.loop = true;
-    const [showControls, setShowControls] = useState(false);
+    const id1 = nextId();
+    const gainClassName = "gain-control-" + id1;
+    const panClassName = "pan-control-" + id1;
+    const filterClassName = "filter-control-" + id1;
     var audioCtx = null;
     var gainNode = null;
     var panNode = null;
     var freqNode = null;
+    console.log("hit once");
 
     const createAudioContext = () => {
         const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -17,7 +23,6 @@ const MusicTest = React.memo(
     }
 
     const initNodes = () => {
-        setShowControls(true);
         const source = audioCtx.createMediaElementSource(audioElement);
         source.connect(audioCtx.destination);
 
@@ -37,74 +42,25 @@ const MusicTest = React.memo(
         source.connect(freqNode);
         freqNode.connect(audioCtx.destination);
         freqNode.type = "lowpass";
+        console.log("needs to be second");
     }
 
     const updateGain = () => {
-        const gainSlider = document.getElementsByClassName("gainControl")[0].value;
+        console.log(gainClassName);
+        const gainSlider = document.getElementsByClassName(gainClassName)[0].value;
         gainNode.gain.setValueAtTime(parseFloat(gainSlider), audioCtx.currentTime);
     }
 
     const updatePanner = () => {
-        const panSlider = document.getElementsByClassName("panControl")[0].value;
+        const panSlider = document.getElementsByClassName(panClassName)[0].value;
         panNode.pan.setValueAtTime(parseFloat(panSlider), audioCtx.currentTime);
     }
 
     const updateFrequency = () => {
-        const freqSlider = document.getElementsByClassName("freqControl")[0].value;
+        const freqSlider = document.getElementsByClassName(filterClassName)[0].value;
         freqNode.frequency.setValueAtTime(freqSlider, audioCtx.currentTime);
         freqNode.gain.setValueAtTime(40, audioCtx.currentTime);
     }
-
-    const renderControls = () => {
-      return (
-        <div className="btn-group-vertical p-5">
-          <span className="btn btn-info text-light">
-            Panning
-            <br></br>
-            <input
-              onChange={updatePanner}
-              className="panControl"
-              step="0.01"
-              type="range"
-              min="-1"
-              max="1"
-            />
-          </span>
-          <span className="btn btn-warning text-light">
-            Gain
-            <br></br>
-            <input
-              onChange={updateGain}
-              className="gainControl"
-              step="0.01"
-              type="range"
-              min="-1"
-              max="1"
-            />
-          </span>
-          <span className="btn btn-primary text-light">
-            Filter
-            <br></br>
-            <input
-              onChange={updateFrequency}
-              className="freqControl"
-              type="range"
-              min="0"
-              max="22000"
-            />
-          </span>
-          <button className="btn btn-light" onClick={() => audioElement.play()}>
-            Play
-          </button>
-          <button
-            className="btn btn-danger"
-            onClick={() => audioElement.pause()}
-          >
-            Pause
-          </button>
-        </div>
-      );
-    };
     
 
     return (
@@ -122,8 +78,50 @@ const MusicTest = React.memo(
             height="200"
           />
         </button>
-        {showControls ? renderControls() : null}
-      </div>
+        <span className="btn btn-info text-light">
+            Panning
+            <br></br>
+            <input
+              onChange={updatePanner}
+              className={panClassName}
+              step="0.01"
+              type="range"
+              min="-1"
+              max="1"
+            />
+          </span>
+          <span className="btn btn-warning text-light">
+            Gain
+            <br></br>
+            <input
+              onChange={updateGain}
+              className={gainClassName}
+              step="0.01"
+              type="range"
+              min="-1"
+              max="1"
+            />
+          </span>
+          <span className="btn btn-primary text-light">
+            Filter
+            <br></br>
+            <input
+              onChange={updateFrequency}
+              className={filterClassName}
+              type="range"
+              min="0"
+              max="22000"
+            />
+          </span>
+          <button className="btn btn-light" onClick={() => audioElement.play()}>
+            Play
+          </button>
+          <button
+            className="btn btn-danger"
+            onClick={() => audioElement.pause()}
+          >
+            Pause
+          </button>      </div>
     );
 
 })
