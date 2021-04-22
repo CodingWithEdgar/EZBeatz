@@ -1,7 +1,12 @@
 import drumImg from "./images/drum_1in.jpg";
 import React from 'react';
-import nextId, {setPrefix} from "react-id-generator";
+import nextId from "react-id-generator";
+import {returnCurrentTime} from './App';
 
+var audioCtx = null;
+var gainNode = null;
+var panNode = null;
+var freqNode = null;
 
 const MusicTest = React.memo(
   function MusicTest(props) {
@@ -11,21 +16,12 @@ const MusicTest = React.memo(
     const gainClassName = "gain-control-" + id1;
     const panClassName = "pan-control-" + id1;
     const filterClassName = "filter-control-" + id1;
-    var audioCtx = null;
-    var gainNode = null;
-    var panNode = null;
-    var freqNode = null;
-    console.log("hit once");
-
-    const createAudioContext = () => {
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        audioCtx = new AudioContext();
-    }
 
     const initNodes = () => {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AudioContext();
         const source = audioCtx.createMediaElementSource(audioElement);
         source.connect(audioCtx.destination);
-
 
         // gain init
         gainNode = audioCtx.createGain();
@@ -42,7 +38,6 @@ const MusicTest = React.memo(
         source.connect(freqNode);
         freqNode.connect(audioCtx.destination);
         freqNode.type = "lowpass";
-        console.log("needs to be second");
     }
 
     const updateGain = () => {
@@ -61,15 +56,16 @@ const MusicTest = React.memo(
         freqNode.frequency.setValueAtTime(freqSlider, audioCtx.currentTime);
         freqNode.gain.setValueAtTime(40, audioCtx.currentTime);
     }
+
+     const syncCurrentTimePlay = () => {
+      audioElement.currentTime = returnCurrentTime();
+      audioElement.play();
+     }
     
 
     return (
       <div className="btn-group-vertical col">
-        <button className="btn btn-secondary" onClick={createAudioContext}>
-          Start
-        </button>
-        <br></br>
-        <button className="btn btn-dark rounded-circle" onClick={initNodes}>
+        <button className="btn btn-dark rounded-circle icon-element" onClick={initNodes}>
           <img
             className="rounded-circle"
             src={drumImg}
@@ -79,49 +75,47 @@ const MusicTest = React.memo(
           />
         </button>
         <span className="btn btn-info text-light">
-            Panning
-            <br></br>
-            <input
-              onChange={updatePanner}
-              className={panClassName}
-              step="0.01"
-              type="range"
-              min="-1"
-              max="1"
-            />
-          </span>
-          <span className="btn btn-warning text-light">
-            Gain
-            <br></br>
-            <input
-              onChange={updateGain}
-              className={gainClassName}
-              step="0.01"
-              type="range"
-              min="-1"
-              max="1"
-            />
-          </span>
-          <span className="btn btn-primary text-light">
-            Filter
-            <br></br>
-            <input
-              onChange={updateFrequency}
-              className={filterClassName}
-              type="range"
-              min="0"
-              max="22000"
-            />
-          </span>
-          <button className="btn btn-light" onClick={() => audioElement.play()}>
-            Play
-          </button>
-          <button
-            className="btn btn-danger"
-            onClick={() => audioElement.pause()}
-          >
-            Pause
-          </button>      </div>
+          Panning
+          <br></br>
+          <input
+            onChange={updatePanner}
+            className={panClassName}
+            step="0.01"
+            type="range"
+            min="-1"
+            max="1"
+          />
+        </span>
+        <span className="btn btn-warning text-light">
+          Gain
+          <br></br>
+          <input
+            onChange={updateGain}
+            className={gainClassName}
+            step="0.01"
+            type="range"
+            min="-1"
+            max="1"
+          />
+        </span>
+        <span className="btn btn-primary text-light">
+          Filter
+          <br></br>
+          <input
+            onChange={updateFrequency}
+            className={filterClassName}
+            type="range"
+            min="0"
+            max="22000"
+          />
+        </span>
+        <button className="btn btn-light" onClick={syncCurrentTimePlay}>
+          Play
+        </button>
+        <button className="btn btn-danger" onClick={() => audioElement.pause()}>
+          Pause
+        </button>
+      </div>
     );
 
 })
