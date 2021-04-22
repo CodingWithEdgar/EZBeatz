@@ -4,6 +4,9 @@ import { Switch, Route } from "react-router-dom";
 import Gabriel from './Gabriel';
 import Parker from './Parker';
 import Angela from './Angela';
+import MusicTest from './MusicTest';
+import gabeKick1 from "./samples/Gabriel Set 1/808 kick.mp3";
+
 
 function App() {
   const [seconds, setSeconds] = useState(0);
@@ -35,6 +38,8 @@ function App() {
         <div className="text-light col">{seconds}s</div>
       </div>
       <h1>Pick a sample set above then click a circle to begin! </h1>
+      <MusicTest src={gabeKick1}/>
+      <MusicTest src={gabeKick1}/>
       <Switch>
         <Route path="/gabriel">
           <Gabriel seconds={seconds} />
