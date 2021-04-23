@@ -3,6 +3,12 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import App from './App';
+//import MusicTest from './MusicTest';
+// ReactDOM.render(<React.StrictMode>
+//   <MusicTest/>
+//   </React.StrictMode>,
+//   document.getElementById("root")
+// )
 import {
   BrowserRouter as Router,
   Link
