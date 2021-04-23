@@ -34,8 +34,8 @@ function App() {
 
   return (
     <div>
+      <h1>Create the audio context, then choose a sample pack above to get started. </h1>
       <button className="btn btn-primary" onClick={afunc}>Create Audio Context</button>
-      <h1>Pick a sample set above then click a circle to begin! </h1>
       <Switch>
         <Route path="/gabriel">
           <Gabriel seconds={audioCtx ? audioCtx.currentTime : 0} />

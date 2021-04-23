@@ -38,6 +38,7 @@ const MusicTest = React.memo(
         source.connect(freqNode);
         freqNode.connect(audioCtx.destination);
         freqNode.type = "lowpass";
+        console.log(gainNode, panNode, freqNode);
     }
 
     const updateGain = () => {
@@ -94,8 +95,8 @@ const MusicTest = React.memo(
             className={gainClassName}
             step="0.01"
             type="range"
-            min="-1"
-            max="1"
+            min="-3.4"
+            max="3.4"
           />
         </span>
         <span className="btn btn-primary text-light">
@@ -106,7 +107,7 @@ const MusicTest = React.memo(
             className={filterClassName}
             type="range"
             min="0"
-            max="22000"
+            max="22050"
           />
         </span>
         <button className="btn btn-light" onClick={syncCurrentTimePlay}>
