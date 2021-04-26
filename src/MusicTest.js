@@ -1,4 +1,3 @@
-import drumImg from "./images/drum_1in.jpg";
 import React from 'react';
 import nextId from "react-id-generator";
 import {returnCurrentTime} from './App';
@@ -38,7 +37,6 @@ const MusicTest = React.memo(
         source.connect(freqNode);
         freqNode.connect(audioCtx.destination);
         freqNode.type = "lowpass";
-        console.log(gainNode, panNode, freqNode);
     }
 
     const updateGain = () => {
@@ -69,7 +67,7 @@ const MusicTest = React.memo(
         <button className="btn btn-dark rounded-circle icon-element" onClick={initNodes}>
           <img
             className="rounded-circle"
-            src={drumImg}
+            src={props.img}
             alt="Drum"
             width="200"
             height="200"

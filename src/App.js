@@ -4,7 +4,7 @@ import { Switch, Route } from "react-router-dom";
 import Gabriel from './Gabriel';
 import Parker from './Parker';
 import Angela from './Angela';
-import kick from "./samples/Gabriel Set 1/808 kick.mp3";
+import kick from "./samples/Gabriel Set 1/808 kick.mp3"
 
 const audioElement =  new Audio(kick);
 audioElement.loop = true; 
@@ -34,8 +34,18 @@ function App() {
 
   return (
     <div>
-      <h1>Create the audio context, then choose a sample pack above to get started. </h1>
-      <button className="btn btn-primary" onClick={afunc}>Create Audio Context</button>
+      <h3>
+        To get started, click{" "}
+        <button className="btn btn-primary" onClick={afunc}>
+          Start
+        </button>
+        , then choose a sample pack above.
+      </h3>
+      <h3>
+        To play a sound, first click on an icon, then its associated play
+        button.
+      </h3>
+      <br></br>
       <Switch>
         <Route path="/gabriel">
           <Gabriel seconds={audioCtx ? audioCtx.currentTime : 0} />
