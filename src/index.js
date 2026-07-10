@@ -19,9 +19,9 @@ ReactDOM.render(
       <div className="App bg-dark container-fluid text-light">
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
           <div className="container-fluid">
-            <a className="navbar-brand" href="/home">
+            <Link className="navbar-brand" to="/">
               EZBeatz
-            </a>
+            </Link>
             <button
               className="navbar-toggler"
               type="button"

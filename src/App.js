@@ -1,5 +1,5 @@
 import "./App.css";
-import React from "react";
+import React, { useRef } from "react";
 import { Switch, Route } from "react-router-dom";
 import Gabriel from './Gabriel';
 import Parker from './Parker';
@@ -7,28 +7,35 @@ import Angela from './Angela';
 import kick from "./samples/Gabriel Set 1/808 kick.mp3"
 
 const audioElement =  new Audio(kick);
-audioElement.loop = true; 
-var audioCtx = null;
+audioElement.loop = true;
 
 const returnCurrentTime = () => audioElement.currentTime;
 
 function App() {
+  // Tracks whether the audio graph has been wired up. createMediaElementSource
+  // may only be called once per element, so re-clicking Start must not re-init.
+  const startedRef = useRef(false);
+
   const afunc = () => {
-    // audio context
+    if (startedRef.current) {
+      audioElement.play();
+      return;
+    }
+    startedRef.current = true;
+
     const AudioContext = window.AudioContext || window.webkitAudioContext;
-    audioCtx = new AudioContext();
+    const audioCtx = new AudioContext();
 
-    // create gain
-    const gainNode = audioCtx.createGain();
-
-    // create source
+    // source -> gain -> destination (single path, so the gain actually applies).
     const source = audioCtx.createMediaElementSource(audioElement);
-    source.connect(audioCtx.destination);
-
-    // connect gain node
+    const gainNode = audioCtx.createGain();
     source.connect(gainNode);
     gainNode.connect(audioCtx.destination);
-    gainNode.gain.value = -1;
+    gainNode.gain.value = 1;
+
+    if (audioCtx.state === "suspended") {
+      audioCtx.resume();
+    }
     audioElement.play();
   }
 
@@ -48,13 +55,13 @@ function App() {
       <br></br>
       <Switch>
         <Route path="/gabriel">
-          <Gabriel seconds={audioCtx ? audioCtx.currentTime : 0} />
+          <Gabriel />
         </Route>
         <Route path="/parker">
-          <Parker seconds={audioCtx ? audioCtx.currentTime : 0}/>
+          <Parker />
         </Route>
         <Route path="/angela">
-          <Angela seconds={audioCtx ? audioCtx.currentTime : 0}/>
+          <Angela />
         </Route>
       </Switch>
     </div>
