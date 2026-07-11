@@ -1,5 +1,30 @@
-import React, { useRef } from 'react';
-import {returnCurrentTime} from './App';
+import React, { useRef, useState } from 'react';
+
+// Bootstrap-Icons play-fill / pause-fill glyphs, inlined so we don't pull in a
+// whole icon font for two shapes.
+const PlayPauseIcon = ({ playing }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="20"
+    height="20"
+    fill="currentColor"
+    viewBox="0 0 16 16"
+    aria-hidden="true"
+  >
+    {playing ? (
+      <path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z" />
+    ) : (
+      <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z" />
+    )}
+  </svg>
+);
+
+// Value formatters for the slider readouts.
+const fmtGain = (v) => `${v.toFixed(1)}`;
+const fmtPan = (v) =>
+  v === 0 ? "C" : v < 0 ? `L${Math.round(-v * 100)}` : `R${Math.round(v * 100)}`;
+const fmtFreq = (v) =>
+  v >= 1000 ? `${(v / 1000).toFixed(1)} kHz` : `${Math.round(v)} Hz`;
 
 const MusicTest = React.memo(
   function MusicTest(props) {
@@ -17,6 +42,11 @@ const MusicTest = React.memo(
     const panNodeRef = useRef(null);
     const freqNodeRef = useRef(null);
 
+    const [isPlaying, setIsPlaying] = useState(false);
+    const [gain, setGain] = useState(1);
+    const [pan, setPan] = useState(0);
+    const [freq, setFreq] = useState(22050);
+
     // Idempotent lazy init: safe to call from any handler, in any order, any
     // number of times. createMediaElementSource is only ever called once per
     // element (calling it twice throws InvalidStateError).
@@ -32,6 +62,10 @@ const MusicTest = React.memo(
         const panNode = audioCtx.createStereoPanner();
         const freqNode = audioCtx.createBiquadFilter();
         freqNode.type = "lowpass";
+        // Start fully open (transparent) so the sound is unfiltered until the
+        // user lowers the cutoff. The node's own default is 350 Hz, which would
+        // otherwise muffle everything while the slider sits at the top.
+        freqNode.frequency.value = 22050;
 
         // Series chain so every control actually affects the output:
         // source -> gain -> pan -> filter -> destination.
@@ -48,81 +82,100 @@ const MusicTest = React.memo(
 
     const updateGain = (e) => {
         ensureInit();
-        gainNodeRef.current.gain.setValueAtTime(
-            parseFloat(e.target.value), audioCtxRef.current.currentTime);
+        const v = parseFloat(e.target.value);
+        setGain(v);
+        gainNodeRef.current.gain.setValueAtTime(v, audioCtxRef.current.currentTime);
     }
 
     const updatePanner = (e) => {
         ensureInit();
-        panNodeRef.current.pan.setValueAtTime(
-            parseFloat(e.target.value), audioCtxRef.current.currentTime);
+        const v = parseFloat(e.target.value);
+        setPan(v);
+        panNodeRef.current.pan.setValueAtTime(v, audioCtxRef.current.currentTime);
     }
 
     const updateFrequency = (e) => {
         ensureInit();
+        const v = parseFloat(e.target.value);
+        setFreq(v);
         // A lowpass filter's `gain` param is inert, so we only drive frequency.
-        freqNodeRef.current.frequency.setValueAtTime(
-            parseFloat(e.target.value), audioCtxRef.current.currentTime);
+        freqNodeRef.current.frequency.setValueAtTime(v, audioCtxRef.current.currentTime);
     }
 
-    const syncCurrentTimePlay = () => {
+    const togglePlay = () => {
         ensureInit();
         if (audioCtxRef.current.state === "suspended") {
             audioCtxRef.current.resume();
         }
-        audioElementRef.current.currentTime = returnCurrentTime();
-        audioElementRef.current.play();
+        if (isPlaying) {
+            audioElementRef.current.pause();
+            setIsPlaying(false);
+        } else {
+            audioElementRef.current.play();
+            setIsPlaying(true);
+        }
     }
 
     return (
-      <div className="btn-group-vertical col">
-        <button className="btn btn-dark rounded-circle icon-element" onClick={ensureInit}>
-          <img
-            className="rounded-circle"
-            src={props.img}
-            alt="Drum"
-            width="200"
-            height="200"
-          />
+      <div
+        className={`pad${isPlaying ? " is-playing" : ""}`}
+        style={{ "--pad-rgb": props.accent || "124, 92, 255" }}
+      >
+        <button
+          className="pad-trigger"
+          onClick={togglePlay}
+          aria-label={isPlaying ? "Pause" : "Play"}
+          title={isPlaying ? "Pause" : "Play"}
+        >
+          <PlayPauseIcon playing={isPlaying} />
         </button>
-        <span className="btn btn-info text-light">
-          Panning
-          <br></br>
-          <input
-            onChange={updatePanner}
-            step="0.01"
-            type="range"
-            min="-1"
-            max="1"
-          />
-        </span>
-        <span className="btn btn-warning text-light">
-          Gain
-          <br></br>
-          <input
-            onChange={updateGain}
-            step="0.01"
-            type="range"
-            min="-3.4"
-            max="3.4"
-          />
-        </span>
-        <span className="btn btn-primary text-light">
-          Filter
-          <br></br>
-          <input
-            onChange={updateFrequency}
-            type="range"
-            min="0"
-            max="22050"
-          />
-        </span>
-        <button className="btn btn-light" onClick={syncCurrentTimePlay}>
-          Play
-        </button>
-        <button className="btn btn-danger" onClick={() => audioElementRef.current.pause()}>
-          Pause
-        </button>
+        <div className="pad-label">{props.label}</div>
+
+        <div className="pad-controls">
+          <div className="ctl">
+            <div className="ctl-row">
+              <span>Gain</span>
+              <span className="ctl-val">{fmtGain(gain)}</span>
+            </div>
+            <input
+              type="range"
+              min="-3.4"
+              max="3.4"
+              step="0.01"
+              value={gain}
+              onChange={updateGain}
+            />
+          </div>
+
+          <div className="ctl">
+            <div className="ctl-row">
+              <span>Pan</span>
+              <span className="ctl-val">{fmtPan(pan)}</span>
+            </div>
+            <input
+              type="range"
+              min="-1"
+              max="1"
+              step="0.01"
+              value={pan}
+              onChange={updatePanner}
+            />
+          </div>
+
+          <div className="ctl">
+            <div className="ctl-row">
+              <span>Tone</span>
+              <span className="ctl-val">{fmtFreq(freq)}</span>
+            </div>
+            <input
+              type="range"
+              min="0"
+              max="22050"
+              value={freq}
+              onChange={updateFrequency}
+            />
+          </div>
+        </div>
       </div>
     );
 

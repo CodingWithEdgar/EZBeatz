@@ -3,70 +3,37 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import App from './App';
-//import MusicTest from './MusicTest';
-// ReactDOM.render(<React.StrictMode>
-//   <MusicTest/>
-//   </React.StrictMode>,
-//   document.getElementById("root")
-// )
 import {
   BrowserRouter as Router,
-  Link
+  Link,
+  NavLink
 } from "react-router-dom";
+
 ReactDOM.render(
   <React.StrictMode>
     <Router>
-      <div className="App bg-dark container-fluid text-light">
-        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-          <div className="container-fluid">
-            <Link className="navbar-brand" to="/">
-              EZBeatz
+      <div className="app-shell">
+        <header className="topbar">
+          <div className="topbar-inner">
+            <Link className="brand" to="/">
+              EZ<span>Beatz</span>
             </Link>
-            <button
-              className="navbar-toggler"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarNav"
-              aria-controls="navbarNav"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-            >
-              <span className="navbar-toggler-icon"></span>
-            </button>
-            <div className="collapse navbar-collapse" id="navbarNav">
-              <ul className="navbar-nav">
-                <li className="nav-item">
-                  <Link
-                    className="nav-link active"
-                    aria-current="page"
-                    to="/gabriel"
-                  >
-                    Gabriel's Samples
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link
-                    className="nav-link active"
-                    aria-current="page"
-                    to="/parker"
-                  >
-                    Parker's Samples
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link
-                    className="nav-link active"
-                    aria-current="page"
-                    to="/angela"
-                  >
-                    Angela's Samples
-                  </Link>
-                </li>
-              </ul>
-            </div>
+            <nav className="topnav">
+              <NavLink className="topnav-link" activeClassName="active" to="/pack/gabriel">
+                Gabriel
+              </NavLink>
+              <NavLink className="topnav-link" activeClassName="active" to="/pack/parker">
+                Parker
+              </NavLink>
+              <NavLink className="topnav-link" activeClassName="active" to="/pack/angela">
+                Angela
+              </NavLink>
+            </nav>
           </div>
-        </nav>
-        <App />
+        </header>
+        <main className="app-main">
+          <App />
+        </main>
       </div>
     </Router>
   </React.StrictMode>,
